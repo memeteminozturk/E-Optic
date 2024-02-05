@@ -1,6 +1,6 @@
 body {
     min-height: 100vh;
-    background-color: #f0f0f0;
+    background-color: #d4d4d4;
     color: #333;
     display: flex;
     justify-content: center;
@@ -10,7 +10,7 @@ body {
 .title {
     font-size: 2rem;
     font-weight: 700;
-    margin-bottom: 1rem;
+    margin-block: 1rem;
     text-align: center;
 }
 
@@ -21,7 +21,7 @@ body {
     flex-wrap: wrap;
     position: sticky;
     top: 0;
-    background-color: #f5f5f5;
+    background-color: #ecfff2;
     padding: 1rem;
 }
 
@@ -31,11 +31,10 @@ body {
     text-align: center;
 }
 
-.remaining-time {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-    justify-content: center;
+.passive {
+    color: #5f5f5f;
+    font-weight: 400;
+    font-size: 1.2rem;
 }
 
 .btn {
@@ -61,15 +60,13 @@ body {
 }
 
 .list {
-    /* padding: 20px; */
     /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
-    background-color: #fff;
+    background-color: #ecfff2;
     border-radius: 4px;
-    height: 1017px;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    overflow-y: auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(20, 1fr);
+    grid-auto-flow: column;
 }
 
 .list-item {
@@ -78,14 +75,15 @@ body {
     gap: 1rem;
     align-items: center;
     border: 1px dashed red;
+    width: fit-content;
 }
 
 .list-item:nth-child(odd) {
-    background-color: #ff00008c;
+    background-color: #f6736d;
 }
 
 .list-item:nth-child(even) {
-    background-color: #ffa6a6ce;
+    background-color: #fbb7b5;
 }
 
 .list-item:last-child {
@@ -128,8 +126,34 @@ body {
 @media screen and (max-width: 768px) {
 
     .list {
-        align-self: center;
-        height: 100%;
-        width: fit-content;
+        grid-template-columns: repeat(2, 1fr);
     }
+}
+
+.remaining-time {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.timer {
+    font-size: 1.5rem;
+    font-weight: 500;
+    display: flex;
+    gap: .5rem;
+    flex-wrap: wrap;
+}
+
+.time {
+    width: 7rem;
+}
+
+.buttons {
+    display: flex;
+    gap: .5rem;
+    justify-content: center;
+}
+
+.buttons button {
+    width: 6rem;
 }
