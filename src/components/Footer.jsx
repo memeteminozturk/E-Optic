@@ -12,17 +12,17 @@ const Footer = () => {
             <div className="container footer-container">
                 <ul className="social-list">
                     <li className="footer-item">
-                        <a href="https://www.linkedin.com/in/umutcanbolat/" target="_blank" rel="noreferrer">
+                        <a href="https://www.linkedin.com/in/memet-emin-%C3%B6zt%C3%BCrk-a14a7a224/" target="_blank" rel="noreferrer">
                             <FontAwesomeIcon icon={faLinkedin} />
                         </a>
                     </li>
                     <li className="footer-item">
-                        <a href="" target="_blank" rel="noreferrer">
+                        <a href="https://github.com/memeteminozturk" target="_blank" rel="noreferrer">
                             <FontAwesomeIcon icon={faGithub} />
                         </a>
                     </li>
                     <li className="footer-item">
-                        <a href="mailto:" target="_blank" rel="noreferrer">
+                        <a href="mailto:memeteminozturk@outlook.com" target="_blank" rel="noreferrer">
                             <FontAwesomeIcon icon={faEnvelope} />
                         </a>
                     </li>
