@@ -22,7 +22,7 @@ body {
     background-color: #ecfff2;
     padding: 1rem;
     width: 100%;
-    gap: 1rem;
+    gap: 2rem;
 }
 
 .subtitle {
@@ -162,6 +162,10 @@ body {
         width: 3rem;
         height: 3rem;
         font-size: 1.5rem;
+    }
+
+    .subtitles {
+        gap: 1rem;
     }
 
 }
