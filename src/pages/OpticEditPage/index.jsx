@@ -19,25 +19,30 @@ const OpticEditPage = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-     
-        // if this template doesnt exist ask user if they want to save it as a new template
-        const templateExists = templates.some((template) => template.name === myOptic.name);
-        if (templateExists) {
-            const confirm = window.confirm("Bu ayarlar mevcut bir şablonun üzerine yazılsın mı?");
-            if (confirm) dispatch(updateTemplate(myOptic));
-        } else {
-            const confirm = window.confirm("Bu ayarlar yeni bir şablon olarak kaydedilsin mi?");
-            if (confirm) dispatch(addTemplate(myOptic));
-        }
-
+    
         try {
-            await dispatch(setOpticAsync(myOptic));
+            await dispatch(setOpticAsync(myOptic)).unwrap();
             navigate("/");
+        } catch (error) {
+            toast.error(error);
+            return;
         }
-        catch (error) {
-            toast.error(error.message);
+    
+        const changingTemplate = templates.find(template => template.id === myOptic.id);
+        const isChanged = changingTemplate && JSON.stringify(changingTemplate) !== JSON.stringify(myOptic);
+    
+        if (isChanged) {
+            const confirm = window.confirm("Bu ayarlar mevcut bir şablonun üzerine yazılsın mı?");
+            if (confirm) {
+                dispatch(updateTemplate(myOptic));
+            }
+        } else if (!changingTemplate) {
+            const confirm = window.confirm("Bu ayarlar yeni bir şablon olarak kaydedilsin mi?");
+            if (confirm) {
+                dispatch(addTemplate(myOptic));
+            }
         }
-    }
+    };
 
     const handleChange = (e) => {
         e.preventDefault();
@@ -67,10 +72,10 @@ const OpticEditPage = () => {
                     <div className="form-group">
                         <label htmlFor="template">Hazır şablonlar</label>
                         <select id="template" name="template" defaultValue={myOptic.name} onChange={(e) => {
-                             const selectedTemplate = templates.find((template) => template.id === parseInt(e.target.value));
-                             if (selectedTemplate) {
-                                 setMyOptic(selectedTemplate);
-                             }
+                            const selectedTemplate = templates.find((template) => template.id === parseInt(e.target.value));
+                            if (selectedTemplate) {
+                                setMyOptic(selectedTemplate);
+                            }
                         }}>
                             {templates.map((template, index) => (
                                 <option key={index} value={template.id}>{template.name}</option>
