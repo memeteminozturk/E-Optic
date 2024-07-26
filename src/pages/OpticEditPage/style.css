@@ -4,9 +4,8 @@
     align-items: center;
     justify-content: center;
     width: 100%;
-    /* TODO */
     /* height will be 100vh - navbar */ 
-    /* height: calc(100vh - 69px); */
+    min-height: calc(100vh - 68px);
 }
 
 form {
@@ -20,6 +19,7 @@ form {
     padding: 1.5rem;
     border-radius: 10px;
     box-shadow: 0 0 10px 4px rgba(0, 0, 0, 0.3);
+    margin-block: 1rem;
 }
 
 .form-group {

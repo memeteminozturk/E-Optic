@@ -5,6 +5,7 @@ import OpticPage from "./pages/OpticPage";
 import OpticEditPage from "./pages/OpticEditPage";
 import { Toaster } from "react-hot-toast";
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 
 function App() {
 
@@ -15,6 +16,7 @@ function App() {
         <Route path="/" element={<OpticPage />} />
         <Route path="/edit" element={<OpticEditPage />} />
       </Routes>
+      <Footer />
       <Toaster />
     </>
   );

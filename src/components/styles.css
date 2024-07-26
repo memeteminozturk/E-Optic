@@ -47,3 +47,36 @@
     height: 2px;
     background-color: #b78fd1;
 }
+
+/* footer */
+.footer {
+    background-color: #e8ffef;
+    padding: 20px 0;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+    width: 100%;
+    z-index: 100;
+}
+
+.footer-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.social-list {
+    display: flex;
+    gap: 2rem;
+}
+
+.social-list a {
+    color: #333;
+    font-size: 2rem;
+}
+
+.social-list a:hover {
+    color: #000;
+}
+
+
