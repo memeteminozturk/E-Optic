@@ -7,7 +7,7 @@ const templateSlice = createSlice({
         {
             id: 1,
             name: 'KPSS',
-            examTime: 180 * 60 * 1000,
+            examTime: 130 * 60 * 1000,
             subjects: [
                 { name: "Genel Yetenek", questionCount: 60 },
                 { name: "Genel Kültür", questionCount: 60 },
