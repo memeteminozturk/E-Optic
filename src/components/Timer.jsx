@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../App.css";
 import { useTimer } from "react-timer-hook";
+import toast from "react-hot-toast";
 
 const Timer = ({ time }) => {
     // time is in milliseconds so we need to convert it to date object
@@ -16,7 +17,6 @@ const Timer = ({ time }) => {
         return timer;
     }
 
-
     const {
         seconds,
         minutes,
@@ -25,7 +25,7 @@ const Timer = ({ time }) => {
         start,
         pause,
         restart
-    } = useTimer({ expiryTimestamp: getExpiryTimestamp(), onExpire: () => console.warn('onExpire called'), autoStart: false });
+    } = useTimer({ expiryTimestamp: getExpiryTimestamp(), onExpire: () => toast.error("Süreniz doldu!"), autoStart: false });
 
     const formatTime = (hours, minutes, seconds) => {
         hours = hours.toString().padStart(2, "0");
@@ -36,9 +36,9 @@ const Timer = ({ time }) => {
 
     useEffect(() => {
         if (isRunning) {
-            document.title = formatTime(hours, minutes, seconds) + " - Sanal Optik Form";
+            document.title = formatTime(hours, minutes, seconds) + " - Sanal Optik";
         } else {
-            document.title = "Sanal Optik Form";
+            document.title = "Sanal Optik";
         }
     }, [isRunning, hours, minutes, seconds]);
 
