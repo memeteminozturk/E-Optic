@@ -153,8 +153,15 @@ body {
 
 @media screen and (max-width: 768px) {
 
+    /* make it one column */
     .list {
-        grid-template-rows: repeat(25, 1fr);
+        grid-auto-flow: row;
+    }
+
+    .list-item .options button {
+        width: 3rem;
+        height: 3rem;
+        font-size: 1.5rem;
     }
 
 }
