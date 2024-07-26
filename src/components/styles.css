@@ -80,3 +80,42 @@
 }
 
 
+/* scroll top */
+
+.scrolltop {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 100;
+    width: 50px;
+    height: 50px;
+    background-color: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease-in-out;
+    opacity: 0;
+    visibility: hidden;
+    cursor: pointer;
+  }
+  
+  .scrolltop.scrolltop--active {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  .scrolltop__icon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #333;
+      transition: all 0.3s ease-in-out;
+  }
+  
+  .scrolltop:hover {
+    background-color: #b78fd1;
+  }
+  
+  .scrolltop:hover .scrolltop__icon {
+    color: #fff;
+  }

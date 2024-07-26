@@ -6,6 +6,7 @@ import OpticEditPage from "./pages/OpticEditPage";
 import { Toaster } from "react-hot-toast";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import ScrollTop from "./components/ScrollTop";
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
         <Route path="/edit" element={<OpticEditPage />} />
       </Routes>
       <Footer />
+      <ScrollTop />
       <Toaster />
     </>
   );
