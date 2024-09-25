@@ -5,6 +5,23 @@ body {
     width: 100%;
 }
 
+.optic-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: .5rem;
+    padding: 1rem;
+}
+
+.optic-header button {
+    border-radius: 50%;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;    
+}
+
 .title {
     font-size: 2rem;
     font-weight: 700;
