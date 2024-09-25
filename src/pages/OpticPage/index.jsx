@@ -1,33 +1,44 @@
-import React from 'react'
-import Timer from '../../components/Timer'
-import "../../App.css"
-import { useSelector } from 'react-redux'
+import React, { useEffect, useState } from 'react';
+import Timer from '../../components/Timer';
+import "../../App.css";
+import { useSelector } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faRedo } from '@fortawesome/free-solid-svg-icons';
 
 const OpticPage = () => {
-
     const optic = useSelector((state) => state.optic);
-
     const options = ["A", "B", "C", "D", "E"];
+    
+    // LocalStorage'dan seçilen şıkları al
+    const [selectedAnswers, setSelectedAnswers] = useState(() => {
+        const savedAnswers = localStorage.getItem('selectedAnswers');
+        return savedAnswers ? JSON.parse(savedAnswers) : {};
+    });
 
-    const handleClick = (e) => {
-        const button = e.target;
-
-        const buttons = button
-            .closest(".list-item")
-            .querySelectorAll(".option button");
-        buttons.forEach((item) => {
-            if (item !== button) {
-                item.classList.remove("active");
-            }
-        });
-
-        button.classList.toggle("active");
+    // Şık seçildiğinde çalışacak fonksiyon
+    const handleClick = (questionIndex, option) => {
+        const updatedAnswers = {
+            ...selectedAnswers,
+            [questionIndex]: option,
+        };
+        setSelectedAnswers(updatedAnswers);
+        localStorage.setItem('selectedAnswers', JSON.stringify(updatedAnswers));
     };
+
+    const clearAnswers = () => {
+        setSelectedAnswers({});
+        localStorage.removeItem('selectedAnswers');
+    }
 
     return (
         <div className="optic-page">
             <div className="container optic-page-container">
-                <h1 className="title">{optic.name}</h1>
+                <div className="optic-header">
+                    <h1 className="title">{optic.name}</h1>
+                    <button className="btn" onClick={clearAnswers} title="Tüm cevapları temizle">
+                        <FontAwesomeIcon icon={faRedo} />
+                    </button>
+                </div>
                 <div className="optic-group">
                     <div className="subtitles">
                         <p className="subtitle">
@@ -39,6 +50,7 @@ const OpticPage = () => {
                         <div className="subtitle">
                             {/* süreyi başlat */}
                             <Timer time={optic.examTime} />
+                            {/* clearAnswers fonksiyonunu çağır */}
                         </div>
                     </div>
                     {/* for loop */}
@@ -50,9 +62,14 @@ const OpticPage = () => {
                                         <li key={index} className="list-item">
                                             <p className="question-no">{index + 1}</p>
                                             <ul className="options">
-                                                {options.map((option, index) => (
-                                                    <li key={index} className="option">
-                                                        <button onClick={handleClick}>{option}</button>
+                                                {options.map((option, optionIndex) => (
+                                                    <li key={optionIndex} className="option">
+                                                        <button
+                                                            className={selectedAnswers[index] === option ? "active" : ""}
+                                                            onClick={() => handleClick(index, option)}
+                                                        >
+                                                            {option}
+                                                        </button>
                                                     </li>
                                                 ))}
                                             </ul>
@@ -60,17 +77,22 @@ const OpticPage = () => {
                                     ))}
                                 </ul>
                             ) :
-                                optic.subjects.map((subject, index) => (
-                                    <div key={index} className="optic-subject">
+                                optic.subjects.map((subject, subjectIndex) => (
+                                    <div key={subjectIndex} className="optic-subject">
                                         <h2 className="optic-subject-title">{subject.name}</h2>
                                         <ul className="list">
-                                            {[...Array(subject.questionCount)].map((item, index) => (
-                                                <li key={index} className="list-item">
-                                                    <p className="question-no">{index + 1}</p>
+                                            {[...Array(subject.questionCount)].map((item, questionIndex) => (
+                                                <li key={questionIndex} className="list-item">
+                                                    <p className="question-no">{questionIndex + 1}</p>
                                                     <ul className="options">
-                                                        {options.map((option, index) => (
-                                                            <li key={index} className="option">
-                                                                <button onClick={handleClick}>{option}</button>
+                                                        {options.map((option, optionIndex) => (
+                                                            <li key={optionIndex} className="option">
+                                                                <button
+                                                                    className={selectedAnswers[`${subjectIndex}-${questionIndex}`] === option ? "active" : ""}
+                                                                    onClick={() => handleClick(`${subjectIndex}-${questionIndex}`, option)}
+                                                                >
+                                                                    {option}
+                                                                </button>
                                                             </li>
                                                         ))}
                                                     </ul>
@@ -83,7 +105,7 @@ const OpticPage = () => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default OpticPage
+export default OpticPage;
