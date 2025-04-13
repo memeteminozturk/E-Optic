@@ -11,13 +11,8 @@ const Timer = ({ time, resetTimer }) => {
             return new Date(JSON.parse(savedTime));
         }
 
-        let timer = new Date();
-        let timerHours = time / 3600000;
-        let timerMinutes = (time % 3600000) / 60000;
-        let timerSeconds = (time % 60000) / 1000;
-        timer.setHours(timer.getHours() + timerHours);
-        timer.setMinutes(timer.getMinutes() + timerMinutes);
-        timer.setSeconds(timer.getSeconds() + timerSeconds);
+        const timer = new Date();
+        timer.setTime(timer.getTime() + time);
         return timer;
     };
 
@@ -35,11 +30,9 @@ const Timer = ({ time, resetTimer }) => {
         autoStart: false
     });
 
-    const formatTime = (hours, minutes, seconds) => {
-        hours = hours.toString().padStart(2, "0");
-        minutes = minutes.toString().padStart(2, "0");
-        seconds = seconds.toString().padStart(2, "0");
-        return `${hours}:${minutes}:${seconds}`;
+    const formatTime = (h, m, s) => {
+        const pad = (n) => n.toString().padStart(2, "0");
+        return `${pad(h)}:${pad(m)}:${pad(s)}`;
     };
 
     // Zamanı yerel depolamaya kaydet
@@ -63,12 +56,15 @@ const Timer = ({ time, resetTimer }) => {
     }, [resetTimer]);
 
     useEffect(() => {
-        if (isRunning) {
-            document.title = formatTime(hours, minutes, seconds) + " - Sanal Optik";
-        } else {
-            document.title = "Sanal Optik";
-        }
+        document.title = isRunning
+            ? formatTime(hours, minutes, seconds) + " - Sanal Optik"
+            : "Sanal Optik";
     }, [isRunning, hours, minutes, seconds]);
+
+    const handleReset = () => {
+        localStorage.removeItem("savedTime");
+        restart(getExpiryTimestamp(), false);
+    };
 
     return (
         <div className="timer">
@@ -86,10 +82,7 @@ const Timer = ({ time, resetTimer }) => {
                         Durdur
                     </button>
                 )}
-                <button onClick={() => {
-                    localStorage.removeItem("savedTime");
-                    restart(getExpiryTimestamp(), false);
-                }} className="reset-button btn">
+                <button className="reset-button btn" onClick={handleReset} >
                     Sıfırla
                 </button>
             </div>
