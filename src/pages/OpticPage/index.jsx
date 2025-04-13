@@ -15,6 +15,9 @@ const OpticPage = () => {
         return savedAnswers ? JSON.parse(savedAnswers) : {};
     });
 
+    // Zamanlayıcıyı sıfırlamak için bir state
+    const [resetTimer, setResetTimer] = useState(false);
+
     // Şık seçildiğinde çalışacak fonksiyon
     const handleClick = (questionIndex, option) => {
         const updatedAnswers = {
@@ -28,6 +31,10 @@ const OpticPage = () => {
     const clearAnswers = () => {
         setSelectedAnswers({});
         localStorage.removeItem('selectedAnswers');
+        setResetTimer(true);
+        setTimeout(() => {
+            setResetTimer(false);
+        }, 1000); // 1 saniye sonra resetTimer'ı false yap
     }
 
     return (
@@ -49,7 +56,7 @@ const OpticPage = () => {
                         </p>
                         <div className="subtitle">
                             {/* süreyi başlat */}
-                            <Timer time={optic.examTime} />
+                            <Timer time={optic.examTime} resetTimer={resetTimer} />
                             {/* clearAnswers fonksiyonunu çağır */}
                         </div>
                     </div>

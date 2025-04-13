@@ -57,7 +57,10 @@ const OpticEditPage = () => {
     }
 
     const addSubject = () => {
-        setMyOptic({ ...myOptic, subjects: [...myOptic.subjects, { name: "Ders - " + (myOptic.subjects.length + 1), questionCount: 30 }] })
+        setMyOptic({ 
+            ...myOptic, 
+            subjects: [...(myOptic.subjects || []), { name: "Ders - " + ((myOptic.subjects?.length || 0) + 1), questionCount: 30 }] 
+        })
     }
 
     useEffect(() => {
