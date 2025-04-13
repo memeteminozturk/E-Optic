@@ -46,7 +46,7 @@ const templateSlice = createSlice({
             examType: "multiSubject",
             subjects: [
                 { id: 1, name: "Türkçe", questionCount: 20 },
-                { id: 2, name: "T.C. İnkılap Tarihi ve Atatürkçülük", questionCount: 20 },
+                { id: 2, name: "T.C. İnkılap Tarihi ve Atatürkçülük", questionCount: 10 },
                 { id: 3, name: "Din Kültürü ve Ahlak Bilgisi", questionCount: 10 },
                 { id: 4, name: "İngilizce", questionCount: 10 }
             ]
