@@ -19,7 +19,7 @@ body {
     height: 2rem;
     display: flex;
     justify-content: center;
-    align-items: center;    
+    align-items: center;
 }
 
 .title {
@@ -102,11 +102,11 @@ body {
     text-align: center;
     transition: background-color .2s ease;
     user-select: none;
+    width: min-content;
 }
 
 .list {
     /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
-    background-color: #ecfff2;
     border-radius: 4px;
     display: grid;
     width: fit-content;
