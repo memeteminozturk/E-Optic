@@ -43,15 +43,23 @@ const templateSlice = createSlice({
             id: 4,
             name: "LGS - Sözel",
             examTime: 75 * 60 * 1000,
-            examType: "singleSubject",
-            questionCount: 50
+            examType: "multiSubject",
+            subjects: [
+                { id: 1, name: "Türkçe", questionCount: 20 },
+                { id: 2, name: "T.C. İnkılap Tarihi ve Atatürkçülük", questionCount: 20 },
+                { id: 3, name: "Din Kültürü ve Ahlak Bilgisi", questionCount: 10 },
+                { id: 4, name: "İngilizce", questionCount: 10 }
+            ]
         },
         {
             id: 5,
             name: "LGS - Sayısal",
             examTime: 80 * 60 * 1000,
-            examType: "singleSubject",
-            questionCount: 40
+            examType: "multiSubject",
+            subjects: [
+                { id: 1, name: "Matematik", questionCount: 20 },
+                { id: 2, name: "Fen Bilimleri", questionCount: 20 }
+            ]
         },
         {
             id: 6,
