@@ -20,10 +20,12 @@ const OpticPage = () => {
 
     // Şık seçildiğinde çalışacak fonksiyon
     const handleClick = (questionIndex, option) => {
-        const updatedAnswers = {
-            ...selectedAnswers,
-            [questionIndex]: option,
-        };
+        const updatedAnswers = { ...selectedAnswers };
+        if (updatedAnswers[questionIndex] === option) {
+            delete updatedAnswers[questionIndex]; // Remove if already selected
+        } else {
+            updatedAnswers[questionIndex] = option; // Add if not selected
+        }
         setSelectedAnswers(updatedAnswers);
         localStorage.setItem('selectedAnswers', JSON.stringify(updatedAnswers));
     };
