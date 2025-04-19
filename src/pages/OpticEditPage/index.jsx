@@ -45,16 +45,23 @@ const OpticEditPage = () => {
     };
 
     const handleChange = (e) => {
-        e.preventDefault();
-        switch (e.target.name) {
-            case "examTime":
-                setMyOptic({ ...myOptic, [e.target.name]: parseInt(e.target.value) * 60 * 1000 });
-                break;
-            default:
-                setMyOptic({ ...myOptic, [e.target.name]: e.target.value });
-                break;
-        }
-    }
+      const { name, type, value, valueAsNumber } = e.target;
+
+      let newValue;
+      if (name === "examTime") {
+        // examTime (minutes to ms)
+        newValue = valueAsNumber * 60 * 1000;
+      } else if (type === "number") {
+        newValue = Number.isNaN(valueAsNumber) ? 0 : valueAsNumber;
+      } else {
+        newValue = value;
+      }
+
+      setMyOptic((prev) => ({
+        ...prev,
+        [name]: newValue,
+      }));
+    };
 
     const addSubject = () => {
         setMyOptic({ 
