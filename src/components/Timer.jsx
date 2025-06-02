@@ -4,12 +4,16 @@ import { useCountdownTimer } from "../hooks/useCountdownTimer";
 import { formatTime } from "../utils/formatter";
 
 const Timer = ({ time, resetTimer }) => {
-    const TITLE_BASE = "Sanal Optik";
-    const { secondsLeft, isRunning, start, pause, reset } = useCountdownTimer(
-        time,
-        resetTimer
-    );
-    
+  const TITLE_BASE = "Sanal Optik";
+  const { secondsLeft, isRunning, start, pause, reset } = useCountdownTimer(
+    time,
+    resetTimer
+  );
+
+  useEffect(() => {
+    reset();
+  }, [time, reset]);
+
   useEffect(() => {
     document.title = isRunning
       ? `${formatTime(secondsLeft)} - ${TITLE_BASE}`
