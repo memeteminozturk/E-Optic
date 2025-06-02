@@ -89,6 +89,13 @@ const templateSlice = createSlice({
                 { id: 2, name: "Sayısal", questionCount: 50 }
             ]
         },
+        {
+            id: 9,
+            name: "AGS",
+            examTime: 110 * 60 * 1000,
+            examType: "singleSubject",
+            questionCount: 80
+        }
     ],
     reducers: {
         addTemplate: (state, action) => {
