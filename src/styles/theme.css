@@ -1,0 +1,265 @@
+/* Dark Mode Variables */
+:root {
+  /* Light Mode Colors */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafc;
+  --bg-tertiary: #e2e8f0;
+  --bg-gradient-start: #f5f7fa;
+  --bg-gradient-end: #c3cfe2;
+  --bg-card: rgba(255, 255, 255, 0.95);
+  --bg-optic-group: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  --bg-glass: rgba(255, 255, 255, 0.4);
+
+  /* Surface and Card Colors */
+  --surface-color: rgba(255, 230, 240, 0.95);
+  --surface-hover: rgba(255, 255, 255, 0.1);
+  --card-background: rgba(255, 255, 255, 0.95);
+
+  /* Text Colors */
+  --text-primary: #2d3748;
+  --text-secondary: #4a5568;
+  --text-tertiary: #718096;
+  --text-muted: #a0aec0;
+  /* Accent Colors */
+  --accent-primary: #667eea;
+  --accent-secondary: #764ba2;
+  --primary-color: #667eea;
+  --accent-color: #764ba2;
+  --secondary-color: #4a5568;
+  /* Border Colors */
+  --border-primary: #e2e8f0;
+  --border-secondary: #cbd5e0;
+  --border-color: #e2e8f0;
+  --border-accent: rgba(102, 126, 234, 0.1);
+  --border-radius: 8px;
+
+  /* Shadow Colors */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 5px 15px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 50px rgba(0, 0, 0, 0.15);
+  --shadow-accent: 0 8px 25px rgba(102, 126, 234, 0.3);
+  --shadow-light: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.12);
+  --shadow-large: 0 8px 25px rgba(0, 0, 0, 0.15);
+
+  /* Status Colors */
+  --success: #4caf50;
+  --success-bg: #e8f5e8;
+  --error: #f44336;
+  --error-bg: #ffeaea;
+  --warning: #ff9800;
+  --warning-bg: #fff8e1;
+  --info: #2196f3;
+  --info-bg: #e3f2fd;
+
+  /* Gradients */
+  --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --secondary-gradient: linear-gradient(135deg, #4a5568 0%, #667eea 100%);
+  --success-gradient: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+  --warning-gradient: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+  --info-gradient: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+
+  /* Text colors for status items */
+  --success-text: #155724;
+  --warning-text: #856404;
+  --info-text: #0c5460;
+  /* Progress bar */
+  --progress-bg: #e5e7eb;
+  --progress-gradient: var(--primary-gradient);
+
+  /* Transitions */
+  --transition-base: all 0.3s ease;
+  --transition-fast: all 0.2s ease;
+  --transition-slow: all 0.5s ease;
+}
+
+/* Dark Mode Colors */
+.dark-mode {
+  --bg-primary: #1a202c;
+  --bg-secondary: #2d3748;
+  --bg-tertiary: #4a5568;
+  --bg-gradient-start: #2d3748;
+  --bg-gradient-end: #1a202c;
+  --bg-card: rgba(45, 55, 72, 0.95);
+  --bg-optic-group: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+  --bg-glass: rgba(45, 55, 72, 0.4);
+
+  /* Surface and Card Colors */
+  --surface-color: rgba(45, 55, 72, 0.95);
+  --surface-hover: rgba(255, 255, 255, 0.05);
+  --card-background: rgba(45, 55, 72, 0.95);
+
+  /* Text Colors */
+  --text-primary: #f7fafc;
+  --text-secondary: #e2e8f0;
+  --text-tertiary: #cbd5e0;
+  --text-muted: #a0aec0;
+  /* Accent Colors remain the same for consistency */
+  --accent-primary: #667eea;
+  --accent-secondary: #764ba2;
+  --primary-color: #667eea;
+  --accent-color: #764ba2;
+  --secondary-color: #e2e8f0;
+  /* Border Colors */
+  --border-primary: #4a5568;
+  --border-secondary: #718096;
+  --border-color: #4a5568;
+  --border-accent: rgba(102, 126, 234, 0.2);
+  --border-radius: 8px;
+
+  /* Shadow Colors */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 5px 15px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.4);
+  --shadow-xl: 0 20px 50px rgba(0, 0, 0, 0.5);
+  --shadow-accent: 0 8px 25px rgba(102, 126, 234, 0.4);
+  --shadow-light: 0 2px 8px rgba(0, 0, 0, 0.25);
+  --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --shadow-large: 0 8px 25px rgba(0, 0, 0, 0.4);
+
+  /* Status Colors - Darker variants */
+  --success: #48bb78;
+  --success-bg: rgba(72, 187, 120, 0.1);
+  --error: #f56565;
+  --error-bg: rgba(245, 101, 101, 0.1);
+  --warning: #ed8936;
+  --warning-bg: rgba(237, 137, 54, 0.1);
+  --info: #4299e1;
+  --info-bg: rgba(66, 153, 225, 0.1);
+
+  /* Gradients for dark mode */
+  --success-gradient: linear-gradient(
+    135deg,
+    rgba(72, 187, 120, 0.2) 0%,
+    rgba(72, 187, 120, 0.1) 100%
+  );
+  --warning-gradient: linear-gradient(
+    135deg,
+    rgba(237, 137, 54, 0.2) 0%,
+    rgba(237, 137, 54, 0.1) 100%
+  );
+  --info-gradient: linear-gradient(
+    135deg,
+    rgba(66, 153, 225, 0.2) 0%,
+    rgba(66, 153, 225, 0.1) 100%
+  );
+
+  /* Text colors for status items in dark mode */
+  --success-text: #68d391;
+  --warning-text: #f6ad55;
+  --info-text: #63b3ed;
+
+  /* Progress bar */
+  --progress-bg: #4a5568;
+}
+
+/* Theme Toggle Button Styles */
+.theme-toggle {
+  background: var(--bg-card);
+  border: 2px solid var(--border-primary);
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-md);
+  color: var(--text-primary);
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--accent-primary);
+}
+
+.theme-toggle:active {
+  transform: scale(0.95);
+}
+
+.theme-toggle-icon {
+  font-size: 1.2rem;
+  transition: all .2s ease;
+} 
+
+.theme-toggle:hover .theme-toggle-icon {
+  color: var(--accent-primary);
+}
+
+/* Smooth theme transition */
+* {
+  transition: background-color 0.3s ease, border-color 0.3s ease,
+    color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Dark mode specific adjustments */
+.dark-mode body {
+  background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+  color: var(--text-primary);
+}
+
+.dark-mode .navbar {
+  background: rgba(45, 55, 72, 0.95);
+  backdrop-filter: blur(15px);
+  border-bottom: 1px solid var(--border-primary);
+}
+
+.dark-mode .footer {
+  background: rgba(45, 55, 72, 0.95);
+  backdrop-filter: blur(15px);
+  border-top: 1px solid var(--border-primary);
+}
+
+/* Dark mode scroll bar */
+.dark-mode ::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+.dark-mode ::-webkit-scrollbar-thumb {
+  background: var(--bg-tertiary);
+}
+
+.dark-mode ::-webkit-scrollbar-thumb:hover {
+  background: #718096;
+}
+
+/* Mobile responsive theme toggle */
+@media (max-width: 768px) {
+  .theme-toggle-desktop .theme-toggle {
+    width: 38px;
+    height: 38px;
+  }
+
+  .theme-toggle-icon {
+    font-size: 0.9rem;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root {
+    --border-primary: #000000;
+    --text-primary: #000000;
+  }
+
+  .dark-mode {
+    --border-primary: #ffffff;
+    --text-primary: #ffffff;
+  }
+}
+
+/* Reduced motion support */
+/* @media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .theme-toggle:hover .theme-toggle-icon {
+    transform: none;
+  }
+} */

@@ -1,0 +1,153 @@
+.statistics-panel {
+  background: var(--card-background);
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow-md);
+  margin: 1rem 0;
+  border-left: 4px solid var(--primary-color);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+}
+
+.statistics-panel:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.stats-title {
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.overall-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 1rem;
+  border-radius: 8px;
+  transition: transform 0.2s ease;
+}
+
+.stat-item:hover {
+  transform: translateY(-2px);
+}
+
+.stat-item.answered {
+  background: var(--success-gradient);
+  color: var(--success-text);
+}
+
+.stat-item.unanswered {
+  background: var(--warning-gradient);
+  color: var(--warning-text);
+}
+
+.stat-item.completion {
+  background: var(--info-gradient);
+  color: var(--info-text);
+}
+
+.stat-icon {
+  font-size: 1.5rem;
+  opacity: 0.8;
+}
+
+.stat-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.stat-number {
+  font-size: 1.4rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  opacity: 0.8;
+  font-weight: 500;
+}
+
+.subject-stats {
+  border-top: 1px solid var(--border-color);
+  padding-top: 1rem;
+}
+
+.subject-stats-title {
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.subject-stat {
+  margin-bottom: 1rem;
+}
+
+.subject-name {
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 0.3rem;
+  font-size: 0.9rem;
+}
+
+.subject-progress {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.subject-numbers {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  min-width: 40px;
+}
+
+.subject-bar {
+  flex: 1;
+  height: 6px;
+  background-color: var(--progress-bg);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.subject-fill {
+  height: 100%;
+  background: var(--primary-gradient);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.subject-percentage {
+  font-size: 0.8rem;
+  color: var(--primary-color);
+  font-weight: 600;
+  min-width: 35px;
+  text-align: right;
+}
+
+@media (max-width: 768px) {
+  .overall-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .statistics-panel {
+    padding: 1rem;
+  }
+
+  .stat-item {
+    padding: 0.8rem;
+  }
+}
