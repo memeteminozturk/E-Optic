@@ -5,12 +5,22 @@ import "../../App.css";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRedo, faCheck, faEye } from "@fortawesome/free-solid-svg-icons";
+import {
+  faRedo,
+  faCheck,
+  faEye,
+  faChartBar,
+  faChevronDown,
+  faChevronUp,
+} from "@fortawesome/free-solid-svg-icons";
 
 const OpticPage = () => {
   const navigate = useNavigate();
   const optic = useSelector((state) => state.optic);
   const options = ["A", "B", "C", "D", "E"];
+
+  // State for statistics panel toggle
+  const [isStatsOpen, setIsStatsOpen] = useState(false);
 
   // LocalStorage'dan seçilen şıkları al
   const [selectedAnswers, setSelectedAnswers] = useState(() => {
@@ -79,6 +89,11 @@ const OpticPage = () => {
   const goToReview = () => {
     navigate("/review");
   };
+  // Toggle statistics panel
+  const toggleStats = (e) => {
+    e.stopPropagation(); // Prevent event bubbling
+    setIsStatsOpen(!isStatsOpen);
+  };
 
   return (
     <div className="optic-page">
@@ -110,28 +125,45 @@ const OpticPage = () => {
           </div>
         </div>
         <div className="optic-group">
-          <div className="subtitles">
-            <p className="subtitle">
-              <span className="passive">Sınav süresi:</span>{" "}
-              {optic.examTime / 60 / 1000} dakika
-            </p>
-            <p className="subtitle">
-              <span className="passive">Soru sayısı:</span>{" "}
-              {optic.questionCount
-                ? optic.questionCount
-                : optic.subjects.reduce(
-                    (acc, subject) => acc + subject.questionCount,
-                    0
-                  )}
-            </p>
-            <div className="subtitle">
-              {/* süreyi başlat */}
-              <Timer time={optic.examTime} resetTimer={resetTimer} />
-              {/* clearAnswers fonksiyonunu çağır */}
+          <div className="subtitles-container">
+            <div className="subtitles-header">
+              <div className="subtitles sticky-subtitles">
+                <p className="subtitle">
+                  <span className="passive">Sınav süresi:</span>{" "}
+                  {optic.examTime / 60 / 1000} dakika
+                </p>
+                <p className="subtitle">
+                  <span className="passive">Soru sayısı:</span>{" "}
+                  {optic.questionCount
+                    ? optic.questionCount
+                    : optic.subjects.reduce(
+                        (acc, subject) => acc + subject.questionCount,
+                        0
+                      )}
+                </p>
+                <div className="subtitle">
+                  {/* süreyi başlat */}
+                  <Timer time={optic.examTime} resetTimer={resetTimer} />
+                  {/* clearAnswers fonksiyonunu çağır */}
+                </div>
+                <button 
+                  className="toggle-btn" 
+                  onClick={toggleStats}
+                  title={isStatsOpen ? "İstatistikleri gizle" : "İstatistikleri göster"}
+                >
+                  <FontAwesomeIcon
+                    icon={isStatsOpen ? faChevronUp : faChevronDown}
+                    className="subtitles-toggle-icon"
+                  />
+                </button>
+              </div>
             </div>
+            {isStatsOpen && (
+              <div className="stats-container">
+                <Statistics selectedAnswers={selectedAnswers} optic={optic} />
+              </div>
+            )}
           </div>
-
-          <Statistics selectedAnswers={selectedAnswers} optic={optic} />
 
           {/* for loop */}
           <div className="optic-subjects">
