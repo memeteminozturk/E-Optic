@@ -1,13 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCheckCircle,
   faQuestionCircle,
   faTimesCircle,
+  faChevronDown,
+  faChevronUp,
 } from "@fortawesome/free-solid-svg-icons";
 import "./Statistics.css";
 
 const Statistics = ({ selectedAnswers, optic }) => {
+  const [isSubjectStatsOpen, setIsSubjectStatsOpen] = useState(false);
+
+  const toggleSubjectStats = () => {
+    setIsSubjectStatsOpen(!isSubjectStatsOpen);
+  };
+
   const calculateStats = () => {
     const totalQuestions =
       optic.examType === "singleSubject"
@@ -78,30 +86,47 @@ const Statistics = ({ selectedAnswers, optic }) => {
             <span className="stat-label">Tamamlanan</span>
           </div>
         </div>
-      </div>
-
-      {stats.subjectStats.length > 0 && (
+      </div>      {stats.subjectStats.length > 0 && (
         <div className="subject-stats">
-          <h4 className="subject-stats-title">Ders Bazında</h4>
-          {stats.subjectStats.map((subject, index) => (
-            <div key={index} className="subject-stat">
-              <div className="subject-name">{subject.name}</div>
-              <div className="subject-progress">
-                <span className="subject-numbers">
-                  {subject.answered}/{subject.total}
-                </span>
-                <div className="subject-bar">
-                  <div
-                    className="subject-fill"
-                    style={{ width: `${subject.percentage}%` }}
-                  />
+          <div 
+            className="subject-stats-header" 
+            onClick={toggleSubjectStats}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                toggleSubjectStats();
+              }
+            }}
+          >
+            <h4 className="subject-stats-title">Ders Bazında</h4>
+            <FontAwesomeIcon 
+              icon={isSubjectStatsOpen ? faChevronUp : faChevronDown} 
+              className="subject-stats-toggle"
+            />
+          </div>
+          <div className={`subject-stats-content ${isSubjectStatsOpen ? 'subject-stats-content--open' : ''}`}>
+            {stats.subjectStats.map((subject, index) => (
+              <div key={index} className="subject-stat">
+                <div className="subject-name">{subject.name}</div>
+                <div className="subject-progress">
+                  <span className="subject-numbers">
+                    {subject.answered}/{subject.total}
+                  </span>
+                  <div className="subject-bar">
+                    <div
+                      className="subject-fill"
+                      style={{ width: `${subject.percentage}%` }}
+                    />
+                  </div>
+                  <span className="subject-percentage">
+                    {subject.percentage}%
+                  </span>
                 </div>
-                <span className="subject-percentage">
-                  {subject.percentage}%
-                </span>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       )}
     </div>
