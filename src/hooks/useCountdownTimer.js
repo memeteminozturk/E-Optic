@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import toast from "react-hot-toast";
 import { loadTimerData, saveTimerData, clearTimerData } from "../utils/storage";
 
-export function useCountdownTimer(initialMs, resetTrigger) {
+export function useCountdownTimer(initialMs, resetTrigger, onExpire) {
     const initialSeconds = Math.ceil(initialMs / 1000);
 
     const [secondsLeft, setSecondsLeft] = useState(() => {
@@ -13,6 +13,11 @@ export function useCountdownTimer(initialMs, resetTrigger) {
 
     const intervalRef = useRef(null);
     const prevResetRef = useRef(resetTrigger);
+    const onExpireRef = useRef(onExpire);
+
+    useEffect(() => {
+        onExpireRef.current = onExpire;
+    }, [onExpire]);
 
     useEffect(() => {
         saveTimerData({ secondsLeft });
@@ -21,19 +26,21 @@ export function useCountdownTimer(initialMs, resetTrigger) {
     useEffect(() => {
         if (isRunning) {
             intervalRef.current = setInterval(() => {
-                setSecondsLeft((s) => {
-                    if (s <= 1) {
-                        clearInterval(intervalRef.current);
-                        setIsRunning(false);
-                        toast.error("Zaman doldu!");
-                        return 0;
-                    }
-                    return s - 1;
-                });
+                setSecondsLeft((s) => Math.max(0, s - 1));
             }, 1000);
         }
         return () => clearInterval(intervalRef.current);
     }, [isRunning]);
+
+    // Süre çalışırken sıfıra ulaştığında sınavı sonlandır
+    useEffect(() => {
+        if (isRunning && secondsLeft === 0) {
+            clearInterval(intervalRef.current);
+            setIsRunning(false);
+            toast.error("Süre doldu!");
+            onExpireRef.current?.();
+        }
+    }, [isRunning, secondsLeft]);
 
     useEffect(() => {
         if (prevResetRef.current !== resetTrigger) {

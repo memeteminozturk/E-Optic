@@ -1,11 +1,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import toast from 'react-hot-toast';
+import { clearSessionId } from '../../utils/history';
 
 
 export const setOpticAsync = createAsyncThunk(
     'optic/setOpticAsync',
     async (payload, { rejectWithValue }) => {
-        const { questionCount, examTime, name, subjects, examType } = payload;
+        const { questionCount, examTime, name, subjects, penaltyDivisor } = payload;
 
         if (questionCount < 1 || questionCount > 200) {
             return rejectWithValue("Soru sayısı 1 ile 200 arasında olmalıdır.");
@@ -17,7 +18,12 @@ export const setOpticAsync = createAsyncThunk(
             return rejectWithValue("En az bir ders seçmelisiniz.");
         } else if (subjects?.some((subject) => subject.questionCount < 1 || subject.questionCount > 120)) {
             return rejectWithValue("Derslerin soru sayısı 1 ile 120 arasında olmalıdır.");
+        } else if (![0, 3, 4].includes(penaltyDivisor ?? 4)) {
+            return rejectWithValue("Yanlış götürme kuralı geçersiz.");
         }
+
+        // Sınav yapısı değişti: bir sonraki sonuç geçmişe yeni kayıt olarak girsin
+        clearSessionId();
 
         return payload;
     }
@@ -34,18 +40,20 @@ const opticSlice = createSlice({
             { id: 2, name: "Genel Kültür", questionCount: 60 }
         ],
         examType: "multiSubject",
+        penaltyDivisor: 4,
     },
     reducers: {
     },
     extraReducers: (builder) => {
         builder
             .addCase(setOpticAsync.fulfilled, (state, action) => {
-                const { questionCount, examTime, name, subjects, examType } = action.payload;
+                const { questionCount, examTime, name, subjects, examType, penaltyDivisor } = action.payload;
                 state.name = name;
                 state.questionCount = questionCount;
                 state.examTime = examTime;
                 state.subjects = subjects;
                 state.examType = examType;
+                state.penaltyDivisor = penaltyDivisor ?? 4;
                 state.error = null;
                 toast.success("Ayarlar başarıyla güncellendi.");
             })
@@ -55,5 +63,4 @@ const opticSlice = createSlice({
     }
 });
 
-export const { } = opticSlice.actions;
 export default opticSlice.reducer;

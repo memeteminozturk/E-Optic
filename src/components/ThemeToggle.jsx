@@ -1,4 +1,3 @@
-import React from "react";
 import { useTheme } from "../contexts/ThemeContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSun, faMoon } from "@fortawesome/free-solid-svg-icons";
@@ -16,7 +15,7 @@ const ThemeToggle = () => {
         icon={isDarkMode ? faSun : faMoon}
         className="theme-toggle-icon"
       />
-      <span className="theme-toggle-label">{isDarkMode ? "Açık" : "Koyu"}</span>
+      {/* <span className="theme-toggle-label">{isDarkMode ? "Açık" : "Koyu"}</span> */}
     </button>
   );
 };

@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
 import "./App.css";
 import "./styles/theme.css";
 import { Route, Routes } from "react-router-dom";
 import OpticPage from "./pages/OpticPage";
 import OpticEditPage from "./pages/OpticEditPage";
 import ReviewPage from "./pages/ReviewPage";
+import HistoryPage from "./pages/HistoryPage";
 import { Toaster } from "react-hot-toast";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
@@ -19,6 +19,7 @@ function App() {
         <Route path="/" element={<OpticPage />} />
         <Route path="/edit" element={<OpticEditPage />} />
         <Route path="/review" element={<ReviewPage />} />
+        <Route path="/history" element={<HistoryPage />} />
       </Routes>
       <Footer />
       <ScrollTop />

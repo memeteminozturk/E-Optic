@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import "./style.css"
 import { useSelector, useDispatch } from 'react-redux'
 import { setOpticAsync } from '../../redux/optic/opticSlice'
 import toast from 'react-hot-toast'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrash, faPlus, faArrowUp } from '@fortawesome/free-solid-svg-icons'
+import { faTrash, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { addTemplate, updateTemplate } from '../../redux/templates/templateSlicer'
 
 
@@ -51,6 +51,8 @@ const OpticEditPage = () => {
       if (name === "examTime") {
         // examTime (minutes to ms)
         newValue = valueAsNumber * 60 * 1000;
+      } else if (name === "penaltyDivisor") {
+        newValue = Number(value);
       } else if (type === "number") {
         newValue = Number.isNaN(valueAsNumber) ? 0 : valueAsNumber;
       } else {
@@ -106,6 +108,14 @@ const OpticEditPage = () => {
                     <div className="form-group">
                         <label htmlFor="exam-time">Sınav süresi (dakika)</label>
                         <input type="number" id="exam-time" name="examTime" value={(myOptic.examTime / 60 / 1000) || 0} onChange={handleChange} />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="penalty-divisor">Yanlış götürme kuralı</label>
+                        <select id="penalty-divisor" name="penaltyDivisor" value={myOptic.penaltyDivisor ?? 4} onChange={handleChange}>
+                            <option value={4}>4 yanlış 1 doğruyu götürür</option>
+                            <option value={3}>3 yanlış 1 doğruyu götürür</option>
+                            <option value={0}>Yanlış doğruyu götürmez</option>
+                        </select>
                     </div>
                     <div className="form-group" data-visible={myOptic.examType == "singleSubject"}>
                         <label htmlFor="question-count">Soru sayısı</label>

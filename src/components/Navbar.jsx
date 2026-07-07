@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -7,6 +7,7 @@ import {
   faEye,
   faEdit,
   faGraduationCap,
+  faClockRotateLeft,
 } from "@fortawesome/free-solid-svg-icons";
 import ThemeToggle from "./ThemeToggle";
 import "./styles.css";
@@ -96,6 +97,18 @@ const Navbar = () => {
                 <FontAwesomeIcon icon={faEye} className="nav-icon" />
                 İnceleme
               </NavLink>
+            </li>
+            <li className="navbar-item">
+              <NavLink
+                to="/history"
+                className={({ isActive }) =>
+                  `navbar-link ${isActive ? "navbar-link--active" : ""}`
+                }
+                onClick={closeMobileMenu}
+              >
+                <FontAwesomeIcon icon={faClockRotateLeft} className="nav-icon" />
+                Geçmiş
+              </NavLink>
             </li>{" "}
             <li className="navbar-item theme-toggle-desktop">
               <ThemeToggle />
@@ -157,6 +170,18 @@ const Navbar = () => {
               >
                 <FontAwesomeIcon icon={faEye} className="nav-icon" />
                 İnceleme
+              </NavLink>
+            </li>
+            <li className="navbar-item">
+              <NavLink
+                to="/history"
+                className={({ isActive }) =>
+                  `navbar-link ${isActive ? "navbar-link--active" : ""}`
+                }
+                onClick={closeMobileMenu}
+              >
+                <FontAwesomeIcon icon={faClockRotateLeft} className="nav-icon" />
+                Geçmiş
               </NavLink>
             </li>
             <li className="navbar-item theme-toggle-mobile">

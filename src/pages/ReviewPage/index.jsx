@@ -17,8 +17,11 @@ import {
   faQuestionCircle,
   faBullseye,
   faClipboardList,
+  faClockRotateLeft,
 } from "@fortawesome/free-solid-svg-icons";
 import ScoreRing from "./ScoreRing";
+import { getSessionId, upsertRecord } from "../../utils/history";
+import { loadTimerData } from "../../utils/storage";
 import "./style.css";
 
 const OPTIONS = ["A", "B", "C", "D", "E"];
@@ -53,6 +56,49 @@ const buildSections = (optic) =>
           (_, qi) => `${subjectIndex}-${qi}`
         ),
       }));
+
+// Tüm bölümleri verilen cevap anahtarıyla puanlar. penaltyDivisor: kaç yanlışın
+// bir doğruyu götürdüğü (0 = yanlış götürmez).
+const gradeSections = (sections, answers, answerKey, penaltyDivisor) => {
+  const subjects = sections.map((section) => {
+    let right = 0;
+    let wrong = 0;
+    let empty = 0;
+    let unkeyed = 0;
+    section.keys.forEach((k) => {
+      const given = answers[k];
+      const correct = answerKey[k];
+      if (!given) empty++;
+      else if (!correct) unkeyed++;
+      else if (given === correct) right++;
+      else wrong++;
+    });
+    return {
+      name: section.name,
+      total: section.keys.length,
+      right,
+      wrong,
+      empty,
+      unkeyed,
+      net: penaltyDivisor > 0 ? right - wrong / penaltyDivisor : right,
+    };
+  });
+
+  const sum = (pick) => subjects.reduce((acc, s) => acc + pick(s), 0);
+  const total = sum((s) => s.total);
+  const right = sum((s) => s.right);
+
+  return {
+    subjects,
+    total,
+    right,
+    wrong: sum((s) => s.wrong),
+    empty: sum((s) => s.empty),
+    unkeyed: sum((s) => s.unkeyed),
+    net: sum((s) => s.net),
+    score: total > 0 ? Math.round((right / total) * 100) : 0,
+  };
+};
 
 const gradeInfo = (score) => {
   if (score >= 85)
@@ -143,46 +189,12 @@ const ReviewPage = () => {
     return given === correct ? "correct" : "wrong";
   };
 
-  const results = useMemo(() => {
-    const subjects = sections.map((section) => {
-      let right = 0;
-      let wrong = 0;
-      let empty = 0;
-      let unkeyed = 0;
-      section.keys.forEach((k) => {
-        const given = answers[k];
-        const correct = answerKey[k];
-        if (!given) empty++;
-        else if (!correct) unkeyed++;
-        else if (given === correct) right++;
-        else wrong++;
-      });
-      return {
-        name: section.name,
-        total: section.keys.length,
-        right,
-        wrong,
-        empty,
-        unkeyed,
-        net: right - wrong / 4,
-      };
-    });
+  const penaltyDivisor = optic.penaltyDivisor ?? 4;
 
-    const sum = (pick) => subjects.reduce((acc, s) => acc + pick(s), 0);
-    const total = sum((s) => s.total);
-    const right = sum((s) => s.right);
-
-    return {
-      subjects,
-      total,
-      right,
-      wrong: sum((s) => s.wrong),
-      empty: sum((s) => s.empty),
-      unkeyed: sum((s) => s.unkeyed),
-      net: sum((s) => s.net),
-      score: total > 0 ? Math.round((right / total) * 100) : 0,
-    };
-  }, [sections, answers, answerKey]);
+  const results = useMemo(
+    () => gradeSections(sections, answers, answerKey, penaltyDivisor),
+    [sections, answers, answerKey, penaltyDivisor]
+  );
 
   const grade = gradeInfo(results.score);
   const draftCount = allKeys.filter((k) => draftKey[k]).length;
@@ -232,7 +244,30 @@ const ReviewPage = () => {
     setAnswerKey(pruned);
     setDraftKey(pruned);
     setMode("results");
-    toast.success("Cevap anahtarı kaydedildi.");
+
+    // Sonucu geçmişe kaydet; aynı oturumda anahtar düzenlenirse kayıt güncellenir
+    const graded = gradeSections(sections, answers, pruned, penaltyDivisor);
+    const secondsLeft = loadTimerData()?.secondsLeft;
+    upsertRecord({
+      id: getSessionId(),
+      name: optic.name,
+      date: new Date().toISOString(),
+      examTimeMs: optic.examTime,
+      timeUsedSeconds:
+        typeof secondsLeft === "number"
+          ? Math.max(0, Math.round(optic.examTime / 1000) - secondsLeft)
+          : null,
+      score: graded.score,
+      net: graded.net,
+      right: graded.right,
+      wrong: graded.wrong,
+      empty: graded.empty,
+      unkeyed: graded.unkeyed,
+      total: graded.total,
+      subjects: graded.subjects,
+    });
+
+    toast.success("Cevap anahtarı kaydedildi, sonuç geçmişe eklendi.");
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -346,6 +381,15 @@ const ReviewPage = () => {
               aria-label="Ana sayfaya dön"
             >
               <FontAwesomeIcon icon={faHome} />
+            </button>
+            <button
+              type="button"
+              className="rv-icon-btn"
+              onClick={() => navigate("/history")}
+              title="Sınav Geçmişi"
+              aria-label="Sınav geçmişine git"
+            >
+              <FontAwesomeIcon icon={faClockRotateLeft} />
             </button>
             {mode === "results" && (
               <>

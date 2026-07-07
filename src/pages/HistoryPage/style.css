@@ -1,0 +1,452 @@
+/* ===== Geçmiş sayfası =====================================================
+   Grafik tek serilidir; seri rengi vurgu rengidir ve her iki temanın kart
+   yüzeyine karşı doğrulanmıştır (kontrast ≥ 3:1). Durum renkleri (D/Y/B)
+   kimliği tek başına taşımaz; harf etiketiyle birlikte kullanılır.
+   ========================================================================= */
+
+.history-page {
+  --hs-good: #388e3c;
+  --hs-good-soft: rgba(56, 142, 60, 0.12);
+  --hs-bad: #e53935;
+  --hs-bad-soft: rgba(229, 57, 53, 0.1);
+  --hs-neutral: #64748b;
+  --hs-neutral-soft: rgba(100, 116, 139, 0.12);
+  --hs-grid: rgba(100, 116, 139, 0.18);
+  --hs-crosshair: rgba(100, 116, 139, 0.45);
+
+  min-height: calc(100vh - 68px);
+  padding: 1.5rem 0 3rem;
+  background: linear-gradient(
+    135deg,
+    var(--bg-gradient-start) 0%,
+    var(--bg-gradient-end) 100%
+  );
+}
+
+.dark-mode .history-page {
+  --hs-good: #48bb78;
+  --hs-good-soft: rgba(72, 187, 120, 0.16);
+  --hs-bad: #f56565;
+  --hs-bad-soft: rgba(245, 101, 101, 0.14);
+  --hs-neutral: #8b9bb4;
+  --hs-neutral-soft: rgba(139, 155, 180, 0.16);
+  --hs-grid: rgba(139, 155, 180, 0.22);
+  --hs-crosshair: rgba(139, 155, 180, 0.5);
+}
+
+.hs-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ===== Başlık ===== */
+
+.hs-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding-top: 0.5rem;
+}
+
+.hs-eyebrow {
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  margin-bottom: 0.25rem;
+}
+
+.hs-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.15;
+}
+
+.hs-meta {
+  margin-top: 0.35rem;
+  font-size: 0.95rem;
+  color: var(--text-tertiary);
+}
+
+/* ===== Kartlar ve butonlar ===== */
+
+.hs-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 18px;
+  box-shadow: var(--shadow-md);
+  padding: 1.75rem;
+  backdrop-filter: blur(12px);
+  animation: hs-rise 0.5s ease-out both;
+}
+
+@keyframes hs-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hs-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.25rem;
+  border-radius: 40px;
+  border: none;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.hs-btn--primary {
+  background: var(--primary-gradient);
+  color: #fff;
+}
+
+.hs-btn--primary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-accent);
+}
+
+.hs-btn--ghost {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 2px solid var(--border-primary);
+}
+
+.hs-btn--ghost:hover {
+  border-color: var(--error);
+  color: var(--error);
+}
+
+.hs-btn:focus-visible,
+.hs-chip:focus-visible,
+.hs-delete:focus-visible,
+.hs-chart:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+/* ===== Boş durum ===== */
+
+.hs-empty {
+  text-align: center;
+  padding: 3.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.hs-empty-icon {
+  font-size: 2.5rem;
+  color: var(--accent-primary);
+}
+
+.hs-empty h1 {
+  font-size: 1.5rem;
+  color: var(--text-primary);
+}
+
+.hs-empty p {
+  color: var(--text-tertiary);
+  max-width: 420px;
+  line-height: 1.5;
+  margin-bottom: 0.75rem;
+}
+
+/* ===== Net gelişim grafiği ===== */
+
+.hs-trend-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.hs-trend-head h2 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.hs-trend-head h2 svg {
+  color: var(--accent-primary);
+}
+
+.hs-chips {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.hs-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 40px;
+  border: 2px solid var(--border-primary);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.hs-chip:hover {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+.hs-chip--active {
+  background: var(--primary-gradient);
+  border-color: transparent;
+  color: #fff;
+}
+
+.hs-chip-count {
+  font-size: 0.75rem;
+  opacity: 0.8;
+}
+
+.hs-trend-hint {
+  color: var(--text-tertiary);
+  line-height: 1.5;
+  padding: 1.5rem 0;
+  text-align: center;
+}
+
+.hs-chart {
+  position: relative;
+  width: 100%;
+}
+
+.hs-chart-svg {
+  display: block;
+}
+
+.hs-grid {
+  stroke: var(--hs-grid);
+  stroke-width: 1;
+}
+
+.hs-crosshair {
+  stroke: var(--hs-crosshair);
+  stroke-width: 1;
+}
+
+.hs-line {
+  fill: none;
+  stroke: var(--accent-primary);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.hs-dot {
+  fill: var(--accent-primary);
+  stroke: var(--bg-card);
+  stroke-width: 2;
+}
+
+.hs-tick {
+  fill: var(--text-muted);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.hs-endlabel {
+  fill: var(--text-secondary);
+  font-size: 0.8rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.hs-tooltip {
+  position: absolute;
+  transform: translate(-50%, calc(-100% - 14px));
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  box-shadow: var(--shadow-lg);
+  padding: 0.5rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  pointer-events: none;
+  white-space: nowrap;
+  z-index: 5;
+}
+
+.hs-tooltip-value {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.hs-tooltip-label {
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+}
+
+/* ===== Kayıt listesi ===== */
+
+.hs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.hs-record {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: 1.25rem 1.5rem;
+}
+
+.hs-record-main {
+  min-width: 0;
+}
+
+.hs-record-heading {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.hs-record-heading h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.hs-record-date {
+  font-size: 0.85rem;
+  color: var(--text-tertiary);
+}
+
+.hs-record-subjects {
+  margin-top: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--text-tertiary);
+  line-height: 1.5;
+}
+
+.hs-record-stats {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.hs-stat {
+  padding: 0.25rem 0.6rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.hs-stat--good {
+  background: var(--hs-good-soft);
+  color: var(--hs-good);
+}
+
+.hs-stat--bad {
+  background: var(--hs-bad-soft);
+  color: var(--hs-bad);
+}
+
+.hs-stat--neutral {
+  background: var(--hs-neutral-soft);
+  color: var(--hs-neutral);
+}
+
+.hs-net-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 40px;
+  background: var(--primary-gradient);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.hs-score {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+  min-width: 3.2rem;
+  text-align: right;
+}
+
+.hs-delete {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  border: 2px solid var(--border-primary);
+  background: transparent;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-fast);
+}
+
+.hs-delete:hover {
+  border-color: var(--error);
+  color: var(--error);
+}
+
+/* ===== Mobil ===== */
+
+@media screen and (max-width: 640px) {
+  .hs-title {
+    font-size: 1.7rem;
+  }
+
+  .hs-card {
+    padding: 1.25rem;
+  }
+
+  .hs-record {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .hs-record-stats {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .hs-score {
+    text-align: left;
+    min-width: 0;
+  }
+}

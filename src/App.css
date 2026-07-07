@@ -582,3 +582,99 @@ body {
 .optic-subject:hover .optic-subject-title {
   background: var(--secondary-gradient);
 }
+
+/* Süre dolduğunda kilitlenen şıklar */
+.list-item .options button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* "Boş sorulara git" ile odaklanan soru */
+.list-item--highlight {
+  border-color: var(--warning) !important;
+  box-shadow: 0 0 0 4px var(--warning-bg), var(--shadow-md);
+}
+
+/* ===== Sınavı bitirme onay penceresi ===== */
+
+.finish-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.finish-dialog {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 18px;
+  box-shadow: var(--shadow-xl);
+  padding: 1.75rem;
+  max-width: 420px;
+  width: 100%;
+  animation: fadeInUp 0.25s ease-out;
+}
+
+.finish-dialog h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.finish-warning {
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-bottom: 0.75rem;
+}
+
+.finish-empty-list {
+  list-style: none;
+  margin-bottom: 1rem;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.finish-empty-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: 8px;
+  color: var(--text-secondary);
+}
+
+.finish-empty-list li:nth-child(odd) {
+  background: var(--bg-secondary);
+}
+
+.finish-empty-count {
+  font-weight: 700;
+  color: var(--warning-text);
+  white-space: nowrap;
+}
+
+.finish-dialog-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 2px solid var(--border-primary);
+}
+
+.btn--ghost:hover {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}

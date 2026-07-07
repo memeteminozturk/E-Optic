@@ -1,9 +1,23 @@
 import { createSlice } from '@reduxjs/toolkit';
-import toast from 'react-hot-toast';
+
+// Kalıcı olması için localStorage kullanılır; eski sürümün sessionStorage
+// verisi varsa bir kereliğine oradan devralınır.
+const loadTemplates = () => {
+    try {
+        const raw = localStorage.getItem('templates') || sessionStorage.getItem('templates');
+        return raw ? JSON.parse(raw) : null;
+    } catch {
+        return null;
+    }
+};
+
+const persistTemplates = (templates) => {
+    localStorage.setItem('templates', JSON.stringify(templates));
+};
 
 const templateSlice = createSlice({
     name: 'templates',
-    initialState: JSON.parse(sessionStorage.getItem('templates')) || [
+    initialState: loadTemplates() || [
         {
             id: 1,
             name: 'KPSS',
@@ -13,13 +27,15 @@ const templateSlice = createSlice({
                 { name: "Genel Kültür", questionCount: 60 },
             ],
             questionCount: 120,
-            examType: "multiSubject"
+            examType: "multiSubject",
+            penaltyDivisor: 4
         },
         {
             id: 2,
             name: "TYT",
             examTime: 165 * 60 * 1000,
             examType: "multiSubject",
+            penaltyDivisor: 4,
             subjects: [
                 { id: 1, name: "Türkçe", questionCount: 40 },
                 { id: 2, name: "Sosyal Bilimler", questionCount: 20 },
@@ -32,6 +48,7 @@ const templateSlice = createSlice({
             name: "AYT",
             examTime: 180 * 60 * 1000,
             examType: "multiSubject",
+            penaltyDivisor: 4,
             subjects: [
                 { id: 1, name: "Türk Dili ve Edebiyatı", questionCount: 40 },
                 { id: 2, name: "Sosyal Bilimler-1", questionCount: 40 },
@@ -44,6 +61,7 @@ const templateSlice = createSlice({
             name: "LGS - Sözel",
             examTime: 75 * 60 * 1000,
             examType: "multiSubject",
+            penaltyDivisor: 3,
             subjects: [
                 { id: 1, name: "Türkçe", questionCount: 20 },
                 { id: 2, name: "T.C. İnkılap Tarihi ve Atatürkçülük", questionCount: 10 },
@@ -56,6 +74,7 @@ const templateSlice = createSlice({
             name: "LGS - Sayısal",
             examTime: 80 * 60 * 1000,
             examType: "multiSubject",
+            penaltyDivisor: 3,
             subjects: [
                 { id: 1, name: "Matematik", questionCount: 20 },
                 { id: 2, name: "Fen Bilimleri", questionCount: 20 }
@@ -66,13 +85,15 @@ const templateSlice = createSlice({
             name: "YDS",
             questionCount: 80,
             examTime: 180 * 60 * 1000,
-            examType: "singleSubject"
+            examType: "singleSubject",
+            penaltyDivisor: 0
         },
         {
             id: 7,
             name: "ALES",
             examTime: 150 * 60 * 1000,
             examType: "multiSubject",
+            penaltyDivisor: 4,
             subjects: [
                 { id: 1, name: "Sözel", questionCount: 50 },
                 { id: 2, name: "Sayısal", questionCount: 50 }
@@ -84,6 +105,7 @@ const templateSlice = createSlice({
             name: "DGS",
             examTime: 135 * 60 * 1000,
             examType: "multiSubject",
+            penaltyDivisor: 4,
             subjects: [
                 { id: 1, name: "Sözel", questionCount: 50 },
                 { id: 2, name: "Sayısal", questionCount: 50 }
@@ -94,24 +116,25 @@ const templateSlice = createSlice({
             name: "AGS",
             examTime: 110 * 60 * 1000,
             examType: "singleSubject",
-            questionCount: 80
+            questionCount: 80,
+            penaltyDivisor: 4
         }
     ],
     reducers: {
         addTemplate: (state, action) => {
             action.payload.id = state.length + 1;
             state.push(action.payload);
-            sessionStorage.setItem('templates', JSON.stringify(state));
+            persistTemplates(state);
         },
         removeTemplate: (state, action) => {
             const newState = state.filter((template) => template.id !== action.payload);
-            sessionStorage.setItem('templates', JSON.stringify(newState));
+            persistTemplates(newState);
             return newState;
         },
         updateTemplate: (state, action) => {
             const index = state.findIndex((template) => template.id === action.payload.id);
             state[index] = action.payload;
-            sessionStorage.setItem('templates', JSON.stringify(state));
+            persistTemplates(state);
         },
     },
 });

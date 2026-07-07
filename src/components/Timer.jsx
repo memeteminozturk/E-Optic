@@ -1,17 +1,24 @@
-import React, { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import "../App.css";
 import { useCountdownTimer } from "../hooks/useCountdownTimer";
 import { formatTime } from "../utils/formatter";
 
-const Timer = ({ time, resetTimer }) => {
+const Timer = ({ time, resetTimer, onExpire }) => {
   const TITLE_BASE = "Sanal Optik";
   const { secondsLeft, isRunning, start, pause, reset } = useCountdownTimer(
     time,
-    resetTimer
+    resetTimer,
+    onExpire
   );
 
+  // Yalnızca sınav süresi değiştiğinde sıfırla; her mount'ta sıfırlamak
+  // kaydedilmiş sayacı (ve süre bitti kilidini) siliyordu
+  const prevTimeRef = useRef(time);
   useEffect(() => {
-    reset();
+    if (prevTimeRef.current !== time) {
+      prevTimeRef.current = time;
+      reset();
+    }
   }, [time, reset]);
 
   useEffect(() => {

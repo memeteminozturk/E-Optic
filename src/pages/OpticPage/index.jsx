@@ -12,6 +12,9 @@ import {
   faChevronDown,
   faChevronUp,
 } from "@fortawesome/free-solid-svg-icons";
+import { loadTimerData } from "../../utils/storage";
+import { clearSessionId } from "../../utils/history";
+import { formatTime } from "../../utils/formatter";
 
 const OpticPage = () => {
   const navigate = useNavigate();
@@ -30,6 +33,17 @@ const OpticPage = () => {
   // Zamanlayıcıyı sıfırlamak için bir state
   const [resetTimer, setResetTimer] = useState(false);
 
+  // Süre bittiyse form kilitlenir (yenilemeden sonra da geçerli)
+  const [timeUp, setTimeUp] = useState(
+    () => loadTimerData()?.secondsLeft === 0
+  );
+
+  // Sınavı bitirme onay penceresi: null ya da { totalEmpty, bySubject, firstEmptyKey, secondsLeft }
+  const [finishDialog, setFinishDialog] = useState(null);
+
+  // Boş soruya gidince kısa süreli vurgulanacak sorunun anahtarı
+  const [highlightKey, setHighlightKey] = useState(null);
+
   // Şık seçildiğinde çalışacak fonksiyon
   const handleClick = (questionIndex, option) => {
     const updatedAnswers = { ...selectedAnswers };
@@ -45,19 +59,68 @@ const OpticPage = () => {
   const clearAnswers = () => {
     setSelectedAnswers({});
     localStorage.removeItem("selectedAnswers");
+    clearSessionId(); // yeni sınav = geçmişte yeni kayıt
+    setTimeUp(false);
     setResetTimer(true);
     setTimeout(() => {
       setResetTimer(false);
     }, 1000); // 1 saniye sonra resetTimer'ı false yap
   };
 
+  // Süre dolduğunda formu kilitle ve incelemeye geç
+  const handleExpire = () => {
+    setTimeUp(true);
+    navigate("/review");
+  };
+
+  // Tüm optiği tarar: ders ders boş soru sayıları ve ilk boş soru
   const finishExam = () => {
-    const confirmation = window.confirm(
-      "Sınavı bitirmek istiyor musunuz? İnceleme sayfasında cevap anahtarını girerek sonuçlarınızı görebilirsiniz."
-    );
-    if (confirmation) {
-      navigate("/review");
-    }
+    const sections =
+      optic.examType === "singleSubject"
+        ? [
+            {
+              name: "Sorular",
+              keys: [...Array(optic.questionCount || 0)].map((_, i) => `${i}`),
+            },
+          ]
+        : (optic.subjects || []).map((subject, subjectIndex) => ({
+            name: subject.name,
+            keys: [...Array(subject.questionCount)].map(
+              (_, qi) => `${subjectIndex}-${qi}`
+            ),
+          }));
+
+    let firstEmptyKey = null;
+    const bySubject = sections
+      .map((section) => {
+        const emptyKeys = section.keys.filter((k) => !selectedAnswers[k]);
+        if (!firstEmptyKey && emptyKeys.length > 0) firstEmptyKey = emptyKeys[0];
+        return { name: section.name, count: emptyKeys.length };
+      })
+      .filter((s) => s.count > 0);
+
+    setFinishDialog({
+      totalEmpty: bySubject.reduce((acc, s) => acc + s.count, 0),
+      bySubject,
+      firstEmptyKey,
+      secondsLeft: loadTimerData()?.secondsLeft ?? null,
+    });
+  };
+
+  const confirmFinish = () => {
+    setFinishDialog(null);
+    navigate("/review");
+  };
+
+  const goToFirstEmpty = () => {
+    const key = finishDialog?.firstEmptyKey;
+    setFinishDialog(null);
+    if (!key) return;
+    document
+      .getElementById(`question-${key}`)
+      ?.scrollIntoView({ behavior: "smooth", block: "center" });
+    setHighlightKey(key);
+    setTimeout(() => setHighlightKey(null), 2500);
   };
 
   const goToReview = () => {
@@ -117,7 +180,11 @@ const OpticPage = () => {
                 </p>
                 <div className="subtitle">
                   {/* süreyi başlat */}
-                  <Timer time={optic.examTime} resetTimer={resetTimer} />
+                  <Timer
+                    time={optic.examTime}
+                    resetTimer={resetTimer}
+                    onExpire={handleExpire}
+                  />
                   {/* clearAnswers fonksiyonunu çağır */}
                 </div>
                 <button 
@@ -144,7 +211,13 @@ const OpticPage = () => {
             {optic.examType === "singleSubject" ? (
               <ul className="list">
                 {[...Array(optic.questionCount)].map((item, index) => (
-                  <li key={index} className="list-item">
+                  <li
+                    key={index}
+                    id={`question-${index}`}
+                    className={`list-item ${
+                      highlightKey === `${index}` ? "list-item--highlight" : ""
+                    }`}
+                  >
                     <p className="question-no">{index + 1}</p>
                     <ul className="options">
                       {options.map((option, optionIndex) => (
@@ -153,6 +226,7 @@ const OpticPage = () => {
                             className={
                               selectedAnswers[index] === option ? "active" : ""
                             }
+                            disabled={timeUp}
                             onClick={() => handleClick(index, option)}
                           >
                             {option}
@@ -170,7 +244,15 @@ const OpticPage = () => {
                   <ul className="list">
                     {[...Array(subject.questionCount)].map(
                       (item, questionIndex) => (
-                        <li key={questionIndex} className="list-item">
+                        <li
+                          key={questionIndex}
+                          id={`question-${subjectIndex}-${questionIndex}`}
+                          className={`list-item ${
+                            highlightKey === `${subjectIndex}-${questionIndex}`
+                              ? "list-item--highlight"
+                              : ""
+                          }`}
+                        >
                           <p className="question-no">{questionIndex + 1}</p>
                           <ul className="options">
                             {options.map((option, optionIndex) => (
@@ -183,6 +265,7 @@ const OpticPage = () => {
                                       ? "active"
                                       : ""
                                   }
+                                  disabled={timeUp}
                                   onClick={() =>
                                     handleClick(
                                       `${subjectIndex}-${questionIndex}`,
@@ -205,6 +288,62 @@ const OpticPage = () => {
           </div>
         </div>
       </div>
+
+      {finishDialog && (
+        <div
+          className="finish-overlay"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="finish-dialog-title"
+          onClick={() => setFinishDialog(null)}
+        >
+          <div className="finish-dialog" onClick={(e) => e.stopPropagation()}>
+            <h2 id="finish-dialog-title">Sınavı Bitir</h2>
+            {finishDialog.totalEmpty > 0 ? (
+              <>
+                <p className="finish-warning">
+                  <strong>{finishDialog.totalEmpty} soru boş.</strong>
+                  {typeof finishDialog.secondsLeft === "number" &&
+                    finishDialog.secondsLeft > 0 && (
+                      <> Kalan süren: {formatTime(finishDialog.secondsLeft)}.</>
+                    )}
+                </p>
+                <ul className="finish-empty-list">
+                  {finishDialog.bySubject.map((subject) => (
+                    <li key={subject.name}>
+                      <span>{subject.name}</span>
+                      <span className="finish-empty-count">
+                        {subject.count} boş
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            ) : (
+              <p className="finish-warning">
+                Tüm sorular cevaplandı. İnceleme sayfasında cevap anahtarını
+                girerek sonuçlarını görebilirsin.
+              </p>
+            )}
+            <div className="finish-dialog-actions">
+              <button className="btn finish-btn" onClick={confirmFinish}>
+                {finishDialog.totalEmpty > 0 ? "Yine de Bitir" : "Sınavı Bitir"}
+              </button>
+              {finishDialog.totalEmpty > 0 && (
+                <button className="btn" onClick={goToFirstEmpty}>
+                  Boş Sorulara Git
+                </button>
+              )}
+              <button
+                className="btn btn--ghost"
+                onClick={() => setFinishDialog(null)}
+              >
+                Vazgeç
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
