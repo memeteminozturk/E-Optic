@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import Timer from "../../components/Timer";
 import Statistics from "../../components/Statistics";
 import "../../App.css";
@@ -9,7 +9,6 @@ import {
   faRedo,
   faCheck,
   faEye,
-  faChartBar,
   faChevronDown,
   faChevronUp,
 } from "@fortawesome/free-solid-svg-icons";
@@ -54,34 +53,9 @@ const OpticPage = () => {
 
   const finishExam = () => {
     const confirmation = window.confirm(
-      "Sınavı bitirmek istediğinizden emin misiniz? Bu işlem geri alınamaz."
+      "Sınavı bitirmek istiyor musunuz? İnceleme sayfasında cevap anahtarını girerek sonuçlarınızı görebilirsiniz."
     );
     if (confirmation) {
-      // Generate sample correct answers for demonstration
-      const sampleCorrectAnswers = {};
-      if (optic.examType === "singleSubject") {
-        for (let i = 0; i < optic.questionCount; i++) {
-          sampleCorrectAnswers[i] = ["A", "B", "C", "D", "E"][
-            Math.floor(Math.random() * 5)
-          ];
-        }
-      } else {
-        optic.subjects.forEach((subject, subjectIndex) => {
-          for (let i = 0; i < subject.questionCount; i++) {
-            sampleCorrectAnswers[`${subjectIndex}-${i}`] = [
-              "A",
-              "B",
-              "C",
-              "D",
-              "E",
-            ][Math.floor(Math.random() * 5)];
-          }
-        });
-      }
-      localStorage.setItem(
-        "correctAnswers",
-        JSON.stringify(sampleCorrectAnswers)
-      );
       navigate("/review");
     }
   };
