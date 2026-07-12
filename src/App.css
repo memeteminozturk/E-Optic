@@ -454,6 +454,8 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  max-width: 1880px;
+  margin: 0 auto;
 }
 
 /* Enhanced Mobile Responsiveness for Optic Group */
