@@ -150,18 +150,18 @@ body {
 .optic-group {
   display: flex;
   flex-direction: column;
-  background: var(--bg-optic-group);
-  border-radius: 20px;
-  padding: 2rem;
-  margin: 1.5rem 0;
-  box-shadow: var(--shadow-lg);
-  border: 1px solid var(--border-color);
-  backdrop-filter: blur(10px);
+  /* background: var(--bg-optic-group); */
+  /* border-radius: 20px; */
+  /* padding: 2rem; */
+  /* margin: 1.5rem 0; */
+  /* box-shadow: var(--shadow-lg); */
+  /* border: 1px solid var(--border-color); */
+  /* backdrop-filter: blur(10px); */
   position: relative;
   overflow: hidden;
 }
 
-.optic-group::before {
+/* .optic-group::before {
   content: "";
   position: absolute;
   top: 0;
@@ -170,7 +170,7 @@ body {
   height: 4px;
   background: var(--primary-gradient);
   border-radius: 20px 20px 0 0;
-}
+} */
 
 .optic-subjects {
   display: flex;
