@@ -508,17 +508,20 @@ html {
 
 .social-list a {
   color: var(--text-secondary);
-  font-size: 2rem;
-  padding: 0.5rem;
+  font-size: 1.7rem;
+  width: 3rem;
+  height: 3rem;
   border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: all 0.3s ease;
-  background: var(--surface-hover);
+  border: 1px solid var(--text-secondary);
 }
 
 .social-list a:hover {
   color: var(--primary-color);
-  background: var(--primary-color);
-  color: var(--surface-color);
+  border-color: var(--primary-color);
   transform: translateY(-3px) scale(1.1);
   box-shadow: var(--shadow-medium);
 }
