@@ -4,13 +4,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBars,
   faTimes,
-  faEye,
-  faEdit,
-  faGraduationCap,
-  faClockRotateLeft,
 } from "@fortawesome/free-solid-svg-icons";
 import ThemeToggle from "./ThemeToggle";
 import "./styles.css";
+
+const navItems = [
+  { to: "/", label: "Optik Çöz" },
+  { to: "/edit", label: "Optik Düzenle" },
+  { to: "/review", label: "İnceleme" },
+  { to: "/history", label: "Geçmiş" },
+];
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -58,62 +61,25 @@ const Navbar = () => {
             <span className="logo-text">Optic</span>
           </NavLink>
         </div>
-        {/* Desktop Navigation Menu */}
         <div className="navbar-menu navbar-menu--desktop">
           <ul className="navbar-list">
-            <li className="navbar-item">
-              {" "}
-              <NavLink
-                to="/"
-                className={({ isActive }) =>
-                  `navbar-link ${isActive ? "navbar-link--active" : ""}`
-                }
-                onClick={closeMobileMenu}
-              >
-                <FontAwesomeIcon icon={faGraduationCap} className="nav-icon" />
-                Optik Çöz
-              </NavLink>
-            </li>
-            <li className="navbar-item">
-              <NavLink
-                to="/edit"
-                className={({ isActive }) =>
-                  `navbar-link ${isActive ? "navbar-link--active" : ""}`
-                }
-                onClick={closeMobileMenu}
-              >
-                <FontAwesomeIcon icon={faEdit} className="nav-icon" />
-                Optik Düzenle
-              </NavLink>
-            </li>
-            <li className="navbar-item">
-              <NavLink
-                to="/review"
-                className={({ isActive }) =>
-                  `navbar-link ${isActive ? "navbar-link--active" : ""}`
-                }
-                onClick={closeMobileMenu}
-              >
-                <FontAwesomeIcon icon={faEye} className="nav-icon" />
-                İnceleme
-              </NavLink>
-            </li>
-            <li className="navbar-item">
-              <NavLink
-                to="/history"
-                className={({ isActive }) =>
-                  `navbar-link ${isActive ? "navbar-link--active" : ""}`
-                }
-                onClick={closeMobileMenu}
-              >
-                <FontAwesomeIcon icon={faClockRotateLeft} className="nav-icon" />
-                Geçmiş
-              </NavLink>
-            </li>{" "}
+            {navItems.map(({ to, label }) => (
+              <li className="navbar-item" key={to}>
+                <NavLink
+                  to={to}
+                  className={({ isActive }) =>
+                    `navbar-link ${isActive ? "navbar-link--active" : ""}`
+                  }
+                  onClick={closeMobileMenu}
+                >
+                  {label}
+                </NavLink>
+              </li>
+            ))}
             <li className="navbar-item theme-toggle-desktop">
               <ThemeToggle />
             </li>
-          </ul>{" "}
+          </ul>
         </div>
         <button
           className="mobile-menu-toggle"
@@ -122,11 +88,9 @@ const Navbar = () => {
         >
           <FontAwesomeIcon icon={isMobileMenuOpen ? faTimes : faBars} />
         </button>
-        {/* Mobile Menu Overlay */}
         {isMobileMenuOpen && (
           <div className="mobile-menu-overlay" onClick={closeMobileMenu}></div>
-        )}{" "}
-        {/* Mobile Navigation Menu */}
+        )}
         <div
           className={`navbar-menu--mobile ${
             isMobileMenuOpen ? "navbar-menu--active" : ""
@@ -136,54 +100,19 @@ const Navbar = () => {
             <h2 className="mobile-menu-title">Menü</h2>
           </div>
           <ul className="navbar-list">
-            <li className="navbar-item">
-              <NavLink
-                to="/"
-                className={({ isActive }) =>
-                  `navbar-link ${isActive ? "navbar-link--active" : ""}`
-                }
-                onClick={closeMobileMenu}
-              >
-                <FontAwesomeIcon icon={faGraduationCap} className="nav-icon" />
-                Optik Çöz
-              </NavLink>
-            </li>
-            <li className="navbar-item">
-              <NavLink
-                to="/edit"
-                className={({ isActive }) =>
-                  `navbar-link ${isActive ? "navbar-link--active" : ""}`
-                }
-                onClick={closeMobileMenu}
-              >
-                <FontAwesomeIcon icon={faEdit} className="nav-icon" />
-                Optik Düzenle
-              </NavLink>
-            </li>
-            <li className="navbar-item">
-              <NavLink
-                to="/review"
-                className={({ isActive }) =>
-                  `navbar-link ${isActive ? "navbar-link--active" : ""}`
-                }
-                onClick={closeMobileMenu}
-              >
-                <FontAwesomeIcon icon={faEye} className="nav-icon" />
-                İnceleme
-              </NavLink>
-            </li>
-            <li className="navbar-item">
-              <NavLink
-                to="/history"
-                className={({ isActive }) =>
-                  `navbar-link ${isActive ? "navbar-link--active" : ""}`
-                }
-                onClick={closeMobileMenu}
-              >
-                <FontAwesomeIcon icon={faClockRotateLeft} className="nav-icon" />
-                Geçmiş
-              </NavLink>
-            </li>
+            {navItems.map(({ to, label }) => (
+              <li className="navbar-item" key={to}>
+                <NavLink
+                  to={to}
+                  className={({ isActive }) =>
+                    `navbar-link ${isActive ? "navbar-link--active" : ""}`
+                  }
+                  onClick={closeMobileMenu}
+                >
+                  {label}
+                </NavLink>
+              </li>
+            ))}
             <li className="navbar-item theme-toggle-mobile">
               <ThemeToggle />
             </li>
